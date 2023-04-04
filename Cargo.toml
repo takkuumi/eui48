@@ -6,7 +6,7 @@ authors = ["Andrew Baumhauer <andy@baumhauer.us>",
            "Michal 'vorner' Vaner <vorner+github@vorner.cz>",
 	   "Stan Drozd <drozdziak1@gmail.com>" ]
 license = "MIT/Apache-2.0"
-edition = "2018"
+edition = "2021"
 readme = "README.md"
 repository = "https://github.com/abaumhauer/eui48"
 homepage = "https://github.com/abaumhauer/eui48"
@@ -25,10 +25,9 @@ exclude = [
 ]
 
 [dependencies]
-regex = { version = "1.3.9", optional = false }
-rustc-serialize = { version = "0.3.24", optional = true }
-serde = { version = "1.0.114", optional = true }
-serde_json = { version = "1.0.56", optional = true }
+regex = { version = "1.7", optional = false }
+serde = { version = "1", optional = true }
+serde_json = { version = "1", optional = true }
 
 [dev-dependencies]
 bincode = "1.3.1"
@@ -40,6 +39,6 @@ gitlab = { repository = "abaumhauer/eui48", branch = "master" }
 appveyor = { repository = "abaumhauer/eui48", branch = "master", service = "github" }
 
 [features]
-default = ["rustc-serialize"]
+default = ["serde_bytes"]
 disp_hexstring = []
 serde_bytes = ["serde"]

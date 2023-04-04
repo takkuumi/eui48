@@ -17,8 +17,6 @@
 )]
 
 extern crate regex;
-#[cfg(feature = "rustc-serialize")]
-extern crate rustc_serialize;
 #[cfg(feature = "serde")]
 extern crate serde;
 #[cfg(feature = "serde_json")]
@@ -30,8 +28,6 @@ use std::fmt;
 use std::str::FromStr;
 
 use regex::Regex;
-#[cfg(feature = "rustc-serialize")]
-use rustc_serialize::{Decodable, Decoder, Encodable, Encoder};
 #[cfg(feature = "serde")]
 use serde::{de, Deserialize, Deserializer, Serialize, Serializer};
 
@@ -679,44 +675,6 @@ mod tests {
         assert_eq!(m2, m2);
         assert_eq!(m1, m2);
         assert_eq!(m2, m1);
-    }
-
-    #[test]
-    fn test_serialize() {
-        use rustc_serialize::json;
-
-        let mac = MacAddress::parse_str("12:34:56:AB:CD:EF").unwrap();
-        // Format returned is base on compile time of feature(disp_hexstring)
-        if cfg!(feature = "disp_hexstring") {
-            assert_eq!("\"12:34:56:ab:cd:ef\"", json::encode(&mac).unwrap());
-        } else {
-            assert_eq!("\"12-34-56-ab-cd-ef\"", json::encode(&mac).unwrap());
-        }
-    }
-
-    #[test]
-    fn test_deserialize() {
-        use rustc_serialize::json;
-
-        let mac = MacAddress::parse_str("12:34:56:AB:CD:EF").unwrap();
-
-        if cfg!(feature = "disp_hexstring") {
-            let d = "\"12:34:56:AB:CD:EF\"";
-            assert_eq!(mac, json::decode(&d).unwrap());
-        } else {
-            let d = "\"12-34-56-AB-CD-EF\"";
-            assert_eq!(mac, json::decode(&d).unwrap());
-        }
-    }
-
-    #[test]
-    fn test_serialize_roundtrip() {
-        use rustc_serialize::json;
-
-        let m1 = MacAddress::parse_str("12:34:56:AB:CD:EF").unwrap();
-        let s = json::encode(&m1).unwrap();
-        let m2 = json::decode(&s).unwrap();
-        assert_eq!(m1, m2);
     }
 
     #[test]
